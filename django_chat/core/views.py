@@ -19,7 +19,7 @@ def signup(request):
         # check if data in form is valid
         if form.is_valid():
             # save form and commit to db creating new user
-            form.save()
+            user = form.save()
 
             # login new user
             login(request, user)

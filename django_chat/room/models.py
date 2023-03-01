@@ -7,4 +7,4 @@ class Room(models.Model):
     # long name of the room
     name = models.CharField(max_length=255)
     # short name of the room used in url
-    slug = model.SlugField(unique=True)
+    slug = models.SlugField(unique=True)

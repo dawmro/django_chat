@@ -46,8 +46,11 @@
 
 {% block scripts %} 
 {{ room.slug|json_script:"json-roomname" }}
+{{ request.user.username|json_script:"json-username" }}
+
 <script>
     const roomName = JSON.parse(document.getElementById('json-roomname').textContent);
+    const userName = JSON.parse(document.getElementById('json-username').textContent);
     const chatSocket = new WebSocket(
         'ws://'
         + window.location.host
@@ -56,12 +59,50 @@
         + '/'
     );
 
+    // diplay in log when new message arrives
     chatSocket.onmessage = function(e) {
         console.log('onmessage')
+
+        // parse data from server
+        const data = JSON.parse(e.data);
+
+        // check if message is ok
+        if (data.message) {
+        // add current message as html element      
+        let html = '<div class="p-4 bg-gray-200 rounded-xl">';
+            html += '<p class="font-semibold">' + data.username + '</p>';
+            html += '<p>' + data.message +'</p>';
+            html += '</div>';
+        
+        // append created html element to the div with id chat-messages on page
+        document.querySelector('#chat-messages').innerHTML += html;
+
+        } else {
+            alert('Message was empty!');
+        }
     }
 
+    // diplay in log when disconnecting from chat
     chatSocket.onclose = function(e) {
         console.log('onclose')
     }
+
+    // listen for click, create new event
+    document.querySelector('#chat-message-submit').onclick = function(e) {
+        // create element for message, it will be reset afterwards
+        const messageInputDom = document.querySelector('#chat-message-input');
+        // get message content form input field
+        const message = messageInputDom.value;
+
+        chatSocket.send(JSON.stringify({
+            'message': message,
+            'username': userName,
+            'room': roomName
+        }));
+
+        // reset element
+        messageInputDom = '';
+    }
+
 </script>
 {% endblock %}

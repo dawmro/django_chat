@@ -31,3 +31,43 @@ class ChatConsumer(AsyncWebsocketConsumer):
             # created automagically
             self.channel_name
         )
+
+    # handle new message
+    async def receive(self, text_data):
+        # create json object with text_data from frontend
+        data = json.loads(text_data)
+        # get message from json
+        message = data['message']
+        # get username from json
+        username = data['username']
+        # get room from json
+        room = data['room']
+
+        # send it to room_group_name
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                # object to send
+                'type': 'chat_message',
+                # message, username and room to send
+                'message': message,
+                'username': username,
+                'room': room
+            }
+        )
+
+    # new method for chat_message
+    async def chat_message(self, event):
+        # get message from json
+        message = event['message']
+        # get username from json
+        username = event['username']
+        # get room from json
+        room = event['room']
+
+        # convert data to json object, send it to selected room
+        await self.send(text_data=json.dumps({
+            'message': message,
+            'username': username,
+            'room': room
+        }))

@@ -3,7 +3,7 @@ import json
 # class for creating consumer
 from channels.generic.websocket import AsyncWebsocketConsumer
 # for storing things into database inside asynchronous view
-from agriref.sync import sync_to_async
+from asgiref.sync import sync_to_async
 
 
 class ChatConsumer(AsyncWebsocketConsumer):

@@ -89,6 +89,7 @@
 
     // listen for click, create new event
     document.querySelector('#chat-message-submit').onclick = function(e) {
+        e.preventDefault();
         // create element for message, it will be reset afterwards
         const messageInputDom = document.querySelector('#chat-message-input');
         // get message content form input field
@@ -102,6 +103,8 @@
 
         // reset element
         messageInputDom = '';
+
+        return false
     }
 
 </script>

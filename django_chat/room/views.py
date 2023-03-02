@@ -20,8 +20,8 @@ def rooms(request):
 def room(request, slug):
     # get specific room from db 
     room = Room.objects.get(slug=slug)
-    # get 25 first messages for this room
-    messages = Message.objects.filter(room=room)[0:25]
+    # get 10 freshest messages for this room
+    messages = Message.objects.filter(room=room).order_by('-date_added')[0:10][::-1]
 
     context = {
         'room': room,

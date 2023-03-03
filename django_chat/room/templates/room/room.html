@@ -61,6 +61,8 @@
         
         // append created html element to the div with id chat-messages on page
         document.querySelector('#chat-messages').innerHTML += html;
+        // scroll to chat bottom when new message arrives
+        scrollToBottom();
 
         } else {
             alert('Message was empty!');
@@ -87,10 +89,18 @@
         }));
 
         // reset element
-        messageInputDom = '';
+        messageInputDom.value = '';
 
         return false
     }
+
+    // scroll chat window automagically to bottom
+    function scrollToBottom() {
+        const objDiv = document.querySelector('#chat-messages');
+        objDiv.scrollTop = objDiv.scrollHeight;
+    }
+
+    scrollToBottom();
 
 </script>
 {% endblock %}

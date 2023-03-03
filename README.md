@@ -1,2 +1,4 @@
-# django_chat [WIP]
-Realtime chat created in Django.
+# django_chat 
+Realtime chat created using:
+* Django
+* Channels
